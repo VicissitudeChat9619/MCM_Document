@@ -13,3 +13,5 @@
 所以我的branch是main你的也是main但是没法同步得我来同步吗？为什么会有两条线路
 
 ![alt text](image.png)
+
+现在还会有Merge的提示么
