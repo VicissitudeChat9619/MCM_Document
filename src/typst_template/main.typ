@@ -138,38 +138,38 @@ heating and standby. As for heating process, we derive control equations and bou
 
 Then we determine the time and amount of added hot water. After deriving the value of parameters, we get calculating results via formula deduction and simulating results via CFD.
 
-At last, we define two criteria to evaluate those two ways of adding hot water. Then we propose optimal strategy for the user in a bathtub.
-The whole modeling process can be shown as follows@fig1.
+// At last, we define two criteria to evaluate those two ways of adding hot water. Then we propose optimal strategy for the user in a bathtub.
+// The whole modeling process can be shown as follows@fig1.
 
 
-#figure(
-  image("./img/fig1.jpg",width: 60%),
-  caption: [Modeling process],
-)<fig1>
+// #figure(
+//   image("",width: 60%),
+//   caption: [Modeling process],
+// )<fig1>
 
-Citation example of Fig.@a,@b.
+// Citation example of Fig.@a,@b.
 
-#grid(
-    columns: (auto, auto),
-    rows:    (auto, auto),
-    gutter: 1pt,
-    [ #figure(
-      image("./img/image.png"),
-      caption: [1biudwi8d10do12h-1dj],
-    )<a> ],
-    [ #figure(
-      image("./img/image.png"),
-      caption: [1biudwi8d10do12h-1dj],
-    )<b> ],
-    [ #figure(
-      image("./img/image.png"),
-      caption: [1biudwi8d10do12h-1dj],
-    )<c> ],
-    [ #figure(
-      image("./img/image.png"),
-      caption: [1biudwi8d10do12h-1dj],
-    )<d> ],
-)\
+// #grid(
+//     columns: (auto, auto),
+//     rows:    (auto, auto),
+//     gutter: 1pt,
+//     [ #figure(
+//       image("./img/image.png"),
+//       caption: [1biudwi8d10do12h-1dj],
+//     )<a> ],
+//     [ #figure(
+//       image("./img/image.png"),
+//       caption: [1biudwi8d10do12h-1dj],
+//     )<b> ],
+//     [ #figure(
+//       image("./img/image.png"),
+//       caption: [1biudwi8d10do12h-1dj],
+//     )<c> ],
+//     [ #figure(
+//       image("./img/image.png"),
+//       caption: [1biudwi8d10do12h-1dj],
+//     )<d> ],
+// )\
 
 = Sub-model I : Adding Water Continuously
 
@@ -191,10 +191,10 @@ We assume the hot water in the bathtub as a cube. Then we put it into a
 rectangular coordinate system. The length, width, and height of it is $a, b$ and $c$.
 
 
-#figure(
-  image("./img/fig2.jpg",width: 60%),
-  caption: [Modeling process],
-)<fig2>
+// #figure(
+//   image("./img/fig2.jpg",width: 60%),
+//   caption: [Modeling process],
+// )<fig2>
 
 In the basis of this, we introduce the following equations \cite{5}:
 
@@ -230,7 +230,7 @@ By Equation @eq3, we have ......
 
 ......
 
-On the right surface in Fig.@fig2, the water also transfers heat firstly with bathtub inner surfaces and then the heat comes into air. The boundary condition here is ......
+// On the right surface in Fig.@fig2, the water also transfers heat firstly with bathtub inner surfaces and then the heat comes into air. The boundary condition here is ......
 
 === Definition of the Mean Temperature
 
@@ -360,10 +360,10 @@ From the simulating outcome, we find the temperature of bath water is hardly eve
 
 The simulation turns out to be as follows:
 
-#figure(
-  image("./img/fig24.jpg",width: 60%),
-  caption: [The simulation results of different ways of arranging entrances],
-)<fig24>
+// #figure(
+//   image("./img/fig24.jpg",width: 60%),
+//   caption: [The simulation results of different ways of arranging entrances],
+// )<fig24>
 
 From the above figure, the more the entrances are, the evener the temperature will be. Recalling on the before simulation outcome, when there is only one entrance for inflow, the temperature of corners is quietly lower than the middle area.
 
