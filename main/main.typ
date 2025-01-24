@@ -28,6 +28,9 @@ Medal predictions can help us to provide a basis for national sports planning, h
 
 == Literature Review
 
+
+== Restatement of the Problem
+
 Develop a model of the total number of medals for each country.
 
 - Based on your model, predict the prediction intervals for all outcomes of the 2028 Summer Olympics medal table in Los Angeles, USA. Analyse which countries are most likely to improve and which countries will perform worse.
@@ -35,9 +38,6 @@ Develop a model of the total number of medals for each country.
 - Analyse which sports are most important to each country based on the model. Analyze the impact of the sports chosen by the host country on the outcome of the competition.
 - Study the data for evidence of changes that may be caused by the“great coach” effect. Estimate the contribution of this effect to the number of medals. Select three countries and identify the sports in which they should consider investing in “great” coaches and estimate the effect.
 - Analyse what other factors may affect Olympic medal counts based on the modeling model
-
-== Restatement of the Problem
-
 
 = Assumptions and Justification
 
