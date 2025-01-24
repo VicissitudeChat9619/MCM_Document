@@ -29,26 +29,32 @@ $$
 R=AR*M-IC \\
 P=AP*M \\
 $$
+
 由于噪声污染指数与游客量有关，建立函数h使得：
 $$
 K=h(M) 
 $$
+
 税收收入会影响游客量，因此建立函数g使得：
 $$
 M=g(T)
 $$
+
 则该问题可以转化为：
 $$
-max(R) \\
-min(P) \\
+max(R) 
+
+min(P) 
+
 min(K)
 $$
+
 即：
 $$
 \begin{cases}
-max(AR*g(T)-IC) \\
-min(AP*g(T)) \\
-min(h(g(T))) \\
+max(AR*g(T)-IC) \
+min(AP*g(T)) \
+min(h(g(T))) \
 \end{cases}
 $$
 可以采用分层优化方法解决该多目标函数问题
