@@ -1,1 +1,2 @@
-.*.csv
+**.csv
+mcm-venv/
