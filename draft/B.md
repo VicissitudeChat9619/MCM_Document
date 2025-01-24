@@ -50,6 +50,7 @@ min(K)
 $$
 
 即：
+
 $$
 \begin{cases}
 max(AR*g(T)-IC) \
@@ -57,4 +58,5 @@ min(AP*g(T)) \
 min(h(g(T))) \
 \end{cases}
 $$
+
 可以采用分层优化方法解决该多目标函数问题
