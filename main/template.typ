@@ -142,7 +142,7 @@
     
   }
   pagebreak()
-  outline(indent: auto)
+  outline(indent: auto, depth: 3)
 
   // Settings for main body
   set par(

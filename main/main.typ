@@ -5,15 +5,41 @@
 // #import "../main/appendices.typ" : appendices
 // #show: appendices.with()
 
+
 #show: project.with(
-  title: "--",
+  title: "Olympic Medal Modeling and Analysis",
   abstract: [
-    --
+
+For *Task.1*, we developed an  ensemble model based on gradient boosting to predict the total number of medals for each country. 
+After multiple attempts for parameter adjustment and train , our model achieved an $R^2$ of $1.00$ and $0.96$ on the training and test sets, respectively, and controlled the `MSE` on the dataset to around $2.77$, `MAPE` to around $12.93%$ , showing relatively good performance.
+
+According to that, we predicted the medal table for the 2028 Los Angeles Olympics: the United States will remain in first place with 45 gold medals, 46 silver medals, and 25 bronze medals, totaling 117 medals; while China will rank second with 35 gold medals, 27 silver medals, and 21 bronze medals, totaling 83 medals.
+
+For *Task.2*, we established a machine learning model similar to *Task.1* and used the importance of parameters to analyze the impact of projects on the number of medals in each country.
+
+For *Task.3*, we developed a neural network learning model to identify the top 10 countries with the highest probability of winning their first medal in the next event.
+
+To estimate the probability of previously non-award-winning countries securing a medal in the next Olympic Games, we employed a neural network to learn a classifier that predicts whether a country without a medal in the current games will win a medal in the next. The sigmoid function served as the activation function, while gradient descent optimized the propagation matrix parameters to minimize the loss function.The backpropagation algorithm was used to calculate the gradient of each element in the propagation matrices during optimization. Finally, the accuracy on the validation set and the value of the loss function were used to assess the classifier's predictive performance and ensure its reliability.
+
+For *Task.4*, we find evidence for the existence of a ‘great coach’ effect by employing Bayesian change-point detection methods to quantify the contribution of the coach.
+
+We set the weighted medal count to $W_t$ and used Bayesian change point detection to identify change points in the time series data. Then we determine whether the change points are caused by the ‘great coach’ effect by combining the year of the ‘great’ coach's appointment. After that, we calculate the coach's contribution rate by comparing the changes in the number of medals before and after the change point. Next, we calculate the historical level of a country in a particular sport based on the countries and sports where we have obtained ‘great’ coaches. By analyzing the historical level and the total number of medals in a sport, three countries and their sports that should be considered for investing in ‘great’ coaches are selected. Finally, the contribution of the ‘great coach’ effect to the number of medals of these three countries is predicted.
+
+// To demonstrate evidence of the existence of the ‘great coach’ effect, we set the weighted medal count as $ "W_t = 3 \times Gold_t + 1 \times Silver_t + 1 \times Bronze_t "$, assuming that $ W_t$ has different distributions before and after the year of the change and that $ W_t$ in each interval obeys a normal distribution. Bayesian change point detection is used to identify change points in the time series data. Then, we determine whether the change points are caused by the ‘great coach’ effect by combining the last year of the ‘great’ coach. After that, we calculate the coach's contribution rate by comparing the changes in the number of medals before and after the change point. 
+
+// Next, based on the countries and their sports where there are ‘great’ coaches, we calculate the historical level of a country in a certain sport as follows:  
+// $ "Level = 4 \times Gold_t + 3 \times Silver_t + 1 \times Bronze_t + 0.5 \times No\ Medal_T "$.  
+// By analyzing the historical level and the total number of medals in the sport, we can select a country to be the best in the world. The total number of medals in the program, three countries, and their sports that should be considered for investment in ‘great’ coaches were selected. Finally, an attempt was made to build a regression model of coaching contribution, historical level, and number of medals in the sport to predict the contribution of the ‘great coach’ effect to the number of medals in these three countries.
+
+// 任务5我们研究了经济、人口、等其他因素对奥运奖牌数的影响，并对结果进行了可视化分析。
+
+For *Task.5*, we studied the impact of economic, population, and other factors on the number of Olympic medals and visualized the results of the analysis.
+
     ],
-  keywords: ("--", "--", "--", "--"),
-  team-number: "00000",
-  problem-chosen: "A",
-  year: "2024",
+  keywords: ("Random Forest","Gradient Boosting", "Neural Network", "Gradient Descent", "Bayesian statistics"),
+  team-number: "2518527",
+  problem-chosen: "C",
+  year: "2025",
   bibliography-file: "refs.bib",
 )
 
@@ -35,13 +61,13 @@ Medal predictions can help us to provide a basis for national sports planning, h
 == Restatement of the Problem
 
 // - #[
-- Task 1: We need to develop a model of the total number of medals for each country. Based on this model, we need to predict the prediction intervals for all outcomes of the 2028 Summer Olympics medal table in Los Angeles, USA.   
+- *Task.1*: We need to develop a model of the total number of medals for each country. Based on this model, we need to predict the prediction intervals for all outcomes of the 2028 Summer Olympics medal table in Los Angeles, USA.   
 // ]
 
-- Task 2: According to the model, we need to analyse which sports are most important to each country and the impact of the sports chosen by the host country on the outcome of the competition.
-- Task 3: For countries that have not won medals, we need to predict how many countries will win their first medals at the next Olympics, giving the chances of this estimate being accurate.
-- Task 4: We need to study the data for evidence of changes that may be caused by the “great coach” effect. Estimate the contribution of this effect to the number of medals. Select three countries and identify the sports in which they should consider investing in “great” coaches and estimate the effect.
-- Task 5: Analyse what other factors may affect Olympic medal counts based on the modeling model.
+- *Task.2*: According to the model, we need to analyse which sports are most important to each country and the impact of the sports chosen by the host country on the outcome of the competition.
+- *Task.3*: For countries that have not won medals, we need to predict how many countries will win their first medals at the next Olympics, giving the chances of this estimate being accurate.
+- *Task.4*: We need to study the data for evidence of changes that may be caused by the “great coach” effect. Estimate the contribution of this effect to the number of medals. Select three countries and identify the sports in which they should consider investing in “great” coaches and estimate the effect.
+- *Task.5*: Analyse what other factors may affect Olympic medal counts based on the modeling model.
 // Develop a model of the total number of medals for each country.
 
 // - Based on your model, predict the prediction intervals for all outcomes of the 2028 Summer Olympics medal table in Los Angeles, USA. Analyse which countries are most likely to improve and which countries will perform worse.
@@ -56,15 +82,15 @@ Medal predictions can help us to provide a basis for national sports planning, h
 
 //在本任务中，我们建立了一个基于梯度提升的集成模型。
 
-In this task, we developed an  ensemble model based on gradient boosting to predict the total number of medals for each country. 
+// In this task, we developed an  ensemble model based on gradient boosting to predict the total number of medals for each country. 
 
-// 经过多次尝试和参数调整，我们模型在训练集和测试集上的$R^2$分别达到了$1.00$和$0.96$，并且将数据集上的MSE控制在了$2.77$左右，表现较为优秀。
+// // 经过多次尝试和参数调整，我们模型在训练集和测试集上的$R^2$分别达到了$1.00$和$0.96$，并且将数据集上的MSE控制在了$2.77$左右，表现较为优秀。
 
-After multiple attempts for parameter adjustment and train , our model achieved an $R^2$ of $1.00$ and $0.96$ on the training and test sets, respectively, and controlled the `MSE` on the dataset to around $2.77$, `MAPE` to around $12.93%$ , showing relatively good performance.
+// After multiple attempts for parameter adjustment and train , our model achieved an $R^2$ of $1.00$ and $0.96$ on the training and test sets, respectively, and controlled the `MSE` on the dataset to around $2.77$, `MAPE` to around $12.93%$ , showing relatively good performance.
 
-// 并以此预测了2028年洛杉矶奥运会的奖牌榜：美国将以45枚金牌、46枚银牌和25枚铜牌，共计117枚奖牌的成绩保持第一，而中国将以35枚金牌、27枚银牌和21枚铜牌，共计83枚奖牌的成绩位居第二。
+// // 并以此预测了2028年洛杉矶奥运会的奖牌榜：美国将以45枚金牌、46枚银牌和25枚铜牌，共计117枚奖牌的成绩保持第一，而中国将以35枚金牌、27枚银牌和21枚铜牌，共计83枚奖牌的成绩位居第二。
 
-According to that, we predicted the medal table for the 2028 Los Angeles Olympics: the United States will remain in first place with 45 gold medals, 46 silver medals, and 25 bronze medals, totaling 117 medals; while China will rank second with 35 gold medals, 27 silver medals, and 21 bronze medals, totaling 83 medals.
+// According to that, we predicted the medal table for the 2028 Los Angeles Olympics: the United States will remain in first place with 45 gold medals, 46 silver medals, and 25 bronze medals, totaling 117 medals; while China will rank second with 35 gold medals, 27 silver medals, and 21 bronze medals, totaling 83 medals.
 
 == Assumptions and Justification
 // 假设与依据
@@ -129,8 +155,8 @@ $
 LL(x,y) = (x-y)^2/2
 $
 
-// 那么，基于传统的GBDT算法，我们引入二阶泰勒展开近似损失函数：@2
-Then, based on the *traditional GBDT algorithm* , we introduce the second-order Taylor expansion to approximate the loss function:
+// 那么，基于传统的GBDT算法，我们引入二阶泰勒展开近似损失函数：
+Then, based on the *traditional GBDT algorithm* , we introduce the second-order Taylor expansion to approximate the loss function:@2
 
 
 $
@@ -204,7 +230,7 @@ We cleaned and preprocessed the data in the following order:
 // - 去除由于冬奥会、战争等原因造成的缺失值。
 - Remove missing values caused by the Winter Olympics, wars, etc.
 // - 添加了$2028$年的项目数据。
-- Added project data for $2028$.//@1
+- Added project data for $2028$@1.//
 // - 通过建立好的映射表，根据详细的运动员数据计算了各国家各项目的详细奖牌数据。
 - According to the detailed athlete data, we calculated the detailed medal data of each country and each project through the established mapping table.
 // - 根据以上映射表，计算了各国家的统治力、偏科程度。
@@ -297,6 +323,8 @@ Automating the above process, we obtained the prediction results for bronze, sil
 // 以上所有评估过程都将预测数据进行了取整。
 *All the above evaluation processes have rounded the predicted data.*
 
+#pagebreak()
+
 == Results
 // 结果
 
@@ -352,7 +380,7 @@ Same as *Task.1*, we first made a brief evaluation of the effect of this model:
   caption: [Prediction vs. True Value for Sport],
 )
 // Figure 5: Prediction vs. True Value forSport_TP.png
-#pagebreak()
+// #pagebreak()
 #figure(
   table(
   columns: (3fr,3fr,3fr,3fr,3fr),
@@ -439,17 +467,17 @@ The dataset is processed based on the files provided on the official website. Th
 
 === Neural Network Framework Construction
 // 神经网络框架构建
-Let $a^{(i)}$ represent the activation value of the i-th layer:
+Let $a^((i))$ represent the activation value of the i-th layer:
 
 $
-a^{(2)} = g(Theta^{(1)} X) \
-a^{(3)} = g(Theta^{(2)} a^{(2)}) \
-a^{(4)} = g(Theta^{(3)} a^{(3)}) \
-hat(y) = a^{(4)}
+a^((2)) = g(Theta^((1)) X) \
+a^((3)) = g(Theta^((2)) a^((2))) \
+a^((4)) = g(Theta^((3)) a^((3))) \
+hat(y) = a^((4))
 $
 
 Where:
-- $Theta^{(i)}$: Propagation matrix
+- $Theta^((i))$: Propagation matrix
 - $g$: Sigmoid activation function with output range $(0,1)$
 
 === Cost Function
@@ -471,7 +499,7 @@ Use gradient descent method with backpropagation:
 
 Update rule:
 $
-Theta_(j  k)^(i) := Theta_(j k)^(i) - eta ("del" J)/("del" Theta_(j k)^(i))
+Theta_(j  k)^(i) := Theta_(j k)^(i) - eta (diff J)/(diff Theta_(j k)^(i))
 $
 
 // 采用分组平均下降策略
@@ -533,7 +561,7 @@ Where:
 
 === Principle
 
-*Bayesian change point detection* is a method based on Bayesian statistics for identifying change points in time series data. A change point is a point where there is a significant change in the distribution of the data, such as a change in the mean, variance, or trend. Bayesian methods can deal with the change point detection problem flexibly by introducing prior and posterior distributions and providing uncertainty estimates of the location of change points.//@5-1
+*Bayesian change point detection* is a method based on Bayesian statistics for identifying change points in time series data. A change point is a point where there is a significant change in the distribution of the data, such as a change in the mean, variance, or trend. Bayesian methods can deal with the change point detection problem flexibly by introducing prior and posterior distributions and providing uncertainty estimates of the location of change points.@5.1//
 
 === Model Assumption
 
@@ -596,21 +624,21 @@ Using Python, we draw a graph of the change in the weighted number of medals for
   caption: [BRA Football Weighted Medals & Degree of Change],
 )
 
-One of the change points (2020) caught our attention, which had a degree of change of $15.66$. Tite became the coach of the Brazilian soccer team in 2016, and he led the team to successfully defend its title by winning the gold medal at the 2020 Olympic Games in Tokyo. Tite continues to keep Brazilian soccer competitive at the international level with his flexible tactical adjustments and precise grasp of the players' psychology. /*@5.2*/ As we analyze this information, we can argue that Tite's coaching is the reason for the Brazilian soccer team's surge in medals in 2020.
+One of the change points (2020) caught our attention, which had a degree of change of $15.66$. Tite became the coach of the Brazilian soccer team in 2016, and he led the team to successfully defend its title by winning the gold medal at the 2020 Olympic Games in Tokyo. Tite continues to keep Brazilian soccer competitive at the international level with his flexible tactical adjustments and precise grasp of the players' psychology.@5.2 /**/ As we analyze this information, we can argue that Tite's coaching is the reason for the Brazilian soccer team's surge in medals in 2020.
 
 #figure(
   image("Figure2 USA Gymnastics Weighted Medals & Degree of Change.png", width: 80%),
   caption: [USA Gymnastics Weighted Medals & Degree of Change],
 )
 
-One of the change points (2012) caught our attention, which had a degree of change of 12.20. Béla Károlyi became the coach of the USA Gymnastics team in 1999, introducing Romanian training methods and improving the overall level of the USA Gymnastics team. /*@5.3*/ When we analyze this information, we can conclude that Béla Károlyi's coaching is the reason for the surge in the number of medals of the U.S. Gymnastics team in 2012.
+One of the change points (2012) caught our attention, which had a degree of change of 12.20. Béla Károlyi became the coach of the USA Gymnastics team in 1999, introducing Romanian training methods and improving the overall level of the USA Gymnastics team. /**/@5.3 When we analyze this information, we can conclude that Béla Károlyi's coaching is the reason for the surge in the number of medals of the U.S. Gymnastics team in 2012.
 
 #figure(
   image("Figure3 NED Cycling Weighted Medals & Degree of Change.png", width: 80%),
   caption: [NED Cycling Weighted Medals & Degree of Change],
 )
 
-One of the change points 2000 caught our attention, this point has a degree of change of 13.50. Max van der Stoep became the coach of the Dutch cycling team in 2000. Under Max van der Stoep's coaching, the Dutch cycling team performed well in the 2004 Olympic Games in Athens and the 2008 Olympic Games in Beijing, winning several medals. The Dutch team has made significant progress in track cycling, becoming one of the world's strongest teams in the sport. /*@5.3*/ When we analyze this information, we can conclude that Max van der Stoep's coaching was the reason for the Dutch cycling team's surge in medals in 2012.
+One of the change points 2000 caught our attention, this point has a degree of change of 13.50. Max van der Stoep became the coach of the Dutch cycling team in 2000. Under Max van der Stoep's coaching, the Dutch cycling team performed well in the 2004 Olympic Games in Athens and the 2008 Olympic Games in Beijing, winning several medals. The Dutch team has made significant progress in track cycling, becoming one of the world's strongest teams in the sport. /**/ @5.4 When we analyze this information, we can conclude that Max van der Stoep's coaching was the reason for the Dutch cycling team's surge in medals in 2012.
 
 The three data sets described above are evidence of changes that may be caused by the *“great coach”* effect. Next, we will quantify the contribution of this effect to medal counts.
 
@@ -915,3 +943,9 @@ The following is the trend chart of the total number of medals won by the Indian
 From 2000 to 2020, India's economy grew rapidly, becoming one of the fastest-growing economies in the world. India also has a relatively large population, but the total number of medals has not shown a clear upward trend. We speculate that it may be due to insufficient national infrastructure and economic distribution issues that the proportion of the population converted into athletes is relatively small, thereby affecting the change in the total number of medals.
 
 From this, we conclude that the* economic level*, *population size*, and *infrastructure level* will affect the change in the number of medals to a certain extent.
+
+// = Conclusion and Advice
+
+// // 从结果来看，我们认为决定一个国家奖牌数的最主要因素是国家的综合实力。在Task1中，我们通过一些数据量化了这个实力，通过Task2和Task3我们发现了一些项目对于奖牌数的影响，通过Task4我们发现了”伟大教练“效应对于奖牌数的影响。在Task5中，我们发现了国家的经济水平，人口数量，基础设施水平也会在一定程度上影响奖牌数的变化。
+
+// Based on the above analyses, we suggest that National Olympic Committees should actively seek out and recruit coaches with successful track records, such as Lang Ping and Béla Károlyi in the examples above. They should also offer attractive remuneration packages to ensure that elite coaches are attracted and retained so that they are motivated and committed to achieving the goals of the Olympic Committee. The most important thing is to create a training environment for coaches, including the provision of resources and autonomy in decision-making. National Olympic Committees should also identify promising young athletes as early as possible, invest in high-quality training facilities and equipment, and increase investment in sports research. This will help to improve the overall level of athletes and increase the chances of winning medals.
