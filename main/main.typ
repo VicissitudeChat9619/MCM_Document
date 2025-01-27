@@ -29,7 +29,7 @@ Before the start of the Olympic Games, many organizations and experts try to pre
 Medal predictions can help us to provide a basis for national sports planning, helping to rationally allocate resources, optimize project development, and enhance overall sports strength. At the same time, it can motivate athletes and coaches to set clear goals, adjust training strategies, and enhance confidence. It can promote the development of the sports industry. It also provides a reference for sports research and analysis, revealing the trend of changes in sports strength and potential influencing factors of various countries.
 
 
-== Literature Review
+// == Literature Review
 
 
 == Restatement of the Problem
@@ -49,6 +49,8 @@ Medal predictions can help us to provide a basis for national sports planning, h
 // - Analyse which sports are most important to each country based on the model. Analyze the impact of the sports chosen by the host country on the outcome of the competition.
 // - Study the data for evidence of changes that may be caused by the“great coach” effect. Estimate the contribution of this effect to the number of medals. Select three countries and identify the sports in which they should consider investing in “great” coaches and estimate the effect.
 // - Analyse what other factors may affect Olympic medal counts based on the modeling model
+
+#pagebreak()
 
 = Task 1: Model for Medal Prediction
 
@@ -327,6 +329,8 @@ By substituting the data for $2028$, we obtained the original data of the follow
 
 // Table 2: Medal Prediction for 2028 Summer Olympics
 
+#pagebreak()
+
 = Task 2: Analysis of Important Sports
 
 // 在这个任务中，我们建立了一个与Task.1类似的机器学习模型，并使用参数的重要性来分析项目对于各国奖牌数的影响。
@@ -429,7 +433,7 @@ $y = cases(
 The dataset is processed based on the files provided on the official website. The samples are split into training and testing sets with a ratio of 0.2.
 
 #figure(
-  image("C_2data initialization.png", width: 40%),
+  image("C_3data initialization.svg", width: 90%),
   caption: [Data Preparation Flowchart],
 )<fig-flow>
 
@@ -453,7 +457,7 @@ Where:
 The binary cross-entropy loss function measures the difference between predicted and actual values:
 
 $
-J(Theta) = -1/n sum_(i=1)^n [y^{(i)} log(hat(y)^(i)) + (1 - hat(y)^(i)) log(1 - y^{(i)})]
+J(Theta) = -1/n sum_(i=1)^n [y^((i)) log(hat(y)^((i))) + (1 - hat(y)^((i))) log(1 - y^((i)))]
 $
 
 === Problem Transformation
@@ -501,6 +505,8 @@ With grouped averaging approach:
 
 [*Note*]: Only displaying countries with probability > 0.1 for clarity.
 
+#pagebreak()
+
 = Task 4: Analysis of the "Great Coach" Effect
 
 == Main tasks
@@ -514,14 +520,14 @@ We used mathematical modeling to determine the point when a coach came on board 
 We take the medal count (gold, silver, bronze) of a country in a given sport at each Olympics. Because the types of medals (gold, silver, bronze) reflect different variations in the strength of a country in a particular sport, we assign different weights to each type of medal: Gold: 3; Silver: 1; Bronze: 0.5. then: 
 
 $
-  WW_t=3*"Gold"_t+1*"Silver"_t+1*"Bronze"_t
+  W_t=3*"Gold"_t+1*"Silver"_t+1*"Bronze"_t
 $
 
 Where:
-+ $WW_t$ is the weighted total number of medals in a sport for that country in year $t$.
-+ $"Bronze"_t$ is the number of bronze medals won by the country in a sport in year $t$.
-+ $"Silver"_t$ is the number of silver medals won by the country in a sport in year $t$.
-+ $"Gold"_t$ is the number of gold medals won by the country in a sport in year $t$.
+- $W_t$ is the weighted total number of medals in a sport for that country in year $t$.
+- $"Bronze"_t$ is the number of bronze medals won by the country in a sport in year $t$.
+- $"Silver"_t$ is the number of silver medals won by the country in a sport in year $t$.
+- $"Gold"_t$ is the number of gold medals won by the country in a sport in year $t$.
 
 == Bayesian change point detection
 
@@ -531,8 +537,381 @@ Where:
 
 === Model Assumption
 
-Assume that the weighted medal count $WW_t$ in year $t$ is distributed before and after the change point obeys a normal distribution with different means and variances:
+Assume that the weighted medal count $W_t$ in year $t$ is distributed before and after the change point obeys a normal distribution with different means and variances:
+
+$
+  W_t prop NN(mu_k, sigma_k^2), t in [t_(k-1), t_k]
+$
+/*
+μ_k is the mean of the kth interval
+σ_k^2 is the variance of the kth interval
+
+*/
+Where:
+- $mu_k$ is the mean of the $k$th interval.
+- $sigma_k^2$ is the variance of the $k$th interval.
 
 
+=== Model Solution
 
-=== Quantifying the level of a country in a given project <Quantifying>
+By analyzing the data$W_1, W_2,..., W_t,$ estimating the location of the change point $t_1,t_2,...,t_k$ and the mean and variance corresponding to the change point to detect the change point. According to the Bayesian formula, the posterior probability is：
+
+$
+p(t_k | W) = p(W | t_k) p(t_k) / p(W)
+$
+
+Where:
+- $p(t_k | W)$ is  likelihood function of the data at change point $t_k$.
+- $p(t_k)$ is prior distribution of the change point $t_k$, assuming that the probability of the change occurring is uniform, i.e. $p(t_k) = 1/T$.
+- $p(W)$ is marginal likelihood of the data.
+
+By calculating the posterior probability for each year, we can detect the year of change in the data. Bayesian change point detection can be modeled using the changefinder library in Python. The detection function in changefinder returns a list *Change* containing the change point detection results for each year. Each element is a boolean value indicating whether the year is a change point: True means the year is a change point; False means the year is not a change point. Using the list *Change*, it is possible to identify which years are the years in which the number of medals changed significantly, and thus infer the impact of coaching changes or other factors on the number of medals. We denote the degree of change in the medal count for that year by:
+
+$
+  "Change"_t times "Standardized"(W_t)
+$
+/*Where the standardized weighted medal count is calculated:
+
+Standardized_W_t=(W_t-mean)/std
+mean is the mean of W_t; std is the variance of W_t
+*/
+
+The standardized weighted medal count is calculated as:
+
+$
+  "Standardized"(W_t) = (W_t - "mean") / "std"
+$
+
+Where:
+- $"mean"$ is the mean of $W_t$.
+- $"std"$ is the variance of $W_t$.
+
+=== Analysis of Results
+
+Using Python, we draw a graph of the change in the weighted number of medals for a given country, and the change in the degree of change. The point of change and the degree of change in the values were also derived. The results are given below:
+
+// Figure1: BRA Football Weighted Medals & Degree of Change
+#figure(
+  image("Figure1 BRA Football Weighted Medals & Degree of Change.png", width: 80%),
+  caption: [BRA Football Weighted Medals & Degree of Change],
+)
+
+One of the change points (2020) caught our attention, which had a degree of change of $15.66$. Tite became the coach of the Brazilian soccer team in 2016, and he led the team to successfully defend its title by winning the gold medal at the 2020 Olympic Games in Tokyo. Tite continues to keep Brazilian soccer competitive at the international level with his flexible tactical adjustments and precise grasp of the players' psychology. /*@5.2*/ As we analyze this information, we can argue that Tite's coaching is the reason for the Brazilian soccer team's surge in medals in 2020.
+
+#figure(
+  image("Figure2 USA Gymnastics Weighted Medals & Degree of Change.png", width: 80%),
+  caption: [USA Gymnastics Weighted Medals & Degree of Change],
+)
+
+One of the change points (2012) caught our attention, which had a degree of change of 12.20. Béla Károlyi became the coach of the USA Gymnastics team in 1999, introducing Romanian training methods and improving the overall level of the USA Gymnastics team. /*@5.3*/ When we analyze this information, we can conclude that Béla Károlyi's coaching is the reason for the surge in the number of medals of the U.S. Gymnastics team in 2012.
+
+#figure(
+  image("Figure3 NED Cycling Weighted Medals & Degree of Change.png", width: 80%),
+  caption: [NED Cycling Weighted Medals & Degree of Change],
+)
+
+One of the change points 2000 caught our attention, this point has a degree of change of 13.50. Max van der Stoep became the coach of the Dutch cycling team in 2000. Under Max van der Stoep's coaching, the Dutch cycling team performed well in the 2004 Olympic Games in Athens and the 2008 Olympic Games in Beijing, winning several medals. The Dutch team has made significant progress in track cycling, becoming one of the world's strongest teams in the sport. /*@5.3*/ When we analyze this information, we can conclude that Max van der Stoep's coaching was the reason for the Dutch cycling team's surge in medals in 2012.
+
+The three data sets described above are evidence of changes that may be caused by the *“great coach”* effect. Next, we will quantify the contribution of this effect to medal counts.
+
+== Quantifying the level of a country in a given project <Quantifying>
+
+=== Calculating a Coach's Contribution
+
+We use weighted medal counts to measure the difference between before and after a coach takes office. The average of the weighted medal counts was first calculated.
+
+/*
+Average of weighted medal counts before the change point: W_average_before=(1/T_before)*sum(W_t) t∈before
+Average of weighted medal counts after the change point: W_average_after(1/T_after)*sum(W_t) t∈after
+T_before is the number of years before the change point.
+T_after is the number of years after the change point.
+
+*/
+
+The average of the weighted medal counts before the change point is calculated as:
+$
+ W_"average,before" = (1/T_"before") sum_(t in "before")(W_t)
+$
+
+The average of the weighted medal counts after the change point is calculated as:
+$
+  W_"average,after" = (1/T_"after") sum_(t in "after")(W_t)
+$
+
+Where:
+- $T_"before"$ is the number of years before the change point.
+- $T_"after"$ is the number of years after the change point.
+
+We can calculate the contribution rate of a coach by comparing the change in the number of medals before and after the change point. Define the contribution rate as：
+
+$
+  "Contribution" = (W_"average,after" - W_"average,before") / W_"average,before"
+$
+
+If the contribution rate is greater than $0$, it means that the arrival of the coach has had a positive impact on the number of medals. The contribution rate reflects the magnitude of the increase in the number of medals, with larger values indicating a more significant change, i.e., the greater the change caused by the “great coach” effect.
+
+=== Analysis of Results
+
+The results can be calculated through Python and are as follows:
+
+/*BRA Football Contribution: 1.25
+USA Gymnastics Contribution: 0.51
+NED Cycling Contribution: 1.71
+*/
+
+#figure(
+  table(
+  columns: (2fr,2fr,3fr),
+  inset: 3pt,
+  stroke:none,
+  align: (right,center,left),
+  [*Country*],[*Sport*],[*Contribution*],
+  [BRA],[Football] ,[1.25],
+  [USA],[Gymnastics] ,[0.51],
+  [NED],[Cycling] ,[1.71],
+  ),
+  caption: none,
+)
+
+The coaching contribution rate for both the Brazilian soccer team and the Dutch cycling team is greater than $1$, indicating that the weighted number of medals increased by more than a factor of one after the change point, suggesting that the impact of coaching is significant. In contrast, the U.S. Gymnastics team's coaching contribution rate was $0.51$, which represents a relatively slow increase in weighted medal counts relative to the Brazilian soccer team and the Dutch cycling team, suggesting that the impact of coaching is less significant.
+
+== Choosing to invest in a sport with a “great coach”
+
+=== Expansion of data
+
+To better select investment projects as well as predict contribution rates, we increased the three data sets described above to eight. The added data are as follows:
+
+#figure(
+  table(
+  columns: (1fr,2fr,2fr,2fr,4fr),
+  inset: 3pt,
+  stroke:none,
+  align: (center,center,center,center,center),
+ [*NOC*],[*Sport*],[*ChangeYear*],[*Contribution*],[*GreatCoach*],
+[CHN],[Volleyball],[2016],[0.49],[郎平],
+[USA],[Gymnastics],[2012],[0.51],[Béla Károlyi],
+[NED],[Cycling],[2000],[1.71],[Max van der Stoep],
+[CHN],[Table Tennis],[2016],[0.34],[刘国梁],
+[FRA],[Fencing],[2000],[0.26],[Pierre Louaillier],
+[BRA],[Football],[2020],[1.25],[Tite],
+[KEN],[Athletics],[2008],[1.33],[Carlos Lopes],
+[GBR],[Swimming],[2016],[9.15],[Daniel Jamieson&Paul Newsome]
+
+  ),
+  caption: none,
+)
+
+=== Quantifying the level of a country in a given project
+
+Unlike the weighted medal count, we also need to consider the total number of participants. Because a country didn't win a medal in a certain event doesn't mean it doesn't have any competitiveness in that event. So we define the *level* as:
+
+/*
+Level=4*Gold_t+3*Silver_t+1*Bronze_t+0.5*No medal_T
+*/
+$
+  "Level" = 4*"Gold"_t + 3*"Silver"_t + 1*"Bronze"_t + 0.5*"No medal"_t
+$
+
+
+Where:
+//No medal_T is the number of sports in which the country competed in year t but did not win a medal.
+- $"No medal"_t$ is the number of sports in which the country competed in year $t$ but did not win a medal.
+
+We calculate the average *Level* for the five years before the point of change as the historical level of a state in a given program, and obtain the following data:
+
+#figure(
+  table(
+  columns: (1fr,2fr,2fr),
+  inset: 3pt,
+  stroke:none,
+  align: (center,center,center),
+  [*NOC*],[*Sport*],[*Level*],
+[CHN],[Volleyball],[19.2],
+[USA],[Gymnastics],[59.3],
+[NED],[Cycling],[11.5],
+[CHN],[Table Tennis],[34.7],
+[FRA],[Fencing],[42.3],
+[BRA],[Football],[44.9],
+[KEN],[Athletics],[33.2],
+[GBR],[Swimming],[32.6]
+  ),
+  caption: none,
+)
+Averaging this out to $32.6$, we believe that the “great coach” effect is more likely to occur when a country's historical ability in a particular program is around $32.6$.
+
+=== Choose sports that are prone to the “great coach” effect
+
+By counting the total number of medals for Sport in the eight data sets
+//Gold_t+Silver_t+Bronze_t,t=change year
+
+$
+  "Total" = "Gold"_t + "Silver"_t + "Bronze"_t, t = "Change Year"
+$
+We get:
+#figure(
+  table(
+  columns: (2fr,3fr),
+  inset: 3pt,
+  stroke:none,
+  align: (center,center),
+  [*Sport*],[*Number of medals*],
+[Volleyball],[72],
+[Gymnastics],[72],
+[Cycling],[67],
+[Table Tennis],[72],
+[Fencing],[67],
+[Football],[72],
+[Athletics],[72],
+[Swimming],[72]
+  ),
+  caption: none,
+)
+
+With an average of $70.75$, we believe that Sports with a total medal count of around $70.75$ are more likely to experience the “great coach” effect. Based on the data from the 2028 Olympic Games, we selected three eligible sports: Artistic Gymnastics (total medals: $67$), Water Polo (total medals: $78$) and Wrestling (total medals: $72$).
+
+===  Selection of countries based on historical level
+
+/*
+Define Level_Sport_t1~t2 as t1~t2, the average level of a certain country in a certain program
+We calculated each country's Level_Gymnastics_2008~2024, Level_Water Polo_2008~2024, and Level_Wrestling_2008~2024 as their respective historical level in this program. Combining the above data, we have selected the following three countries and programs that are suitable for investing in “great coaches”:
+
+GER Artistic Gymnastics : 29.25
+SRB Water Polo : 36.4
+JPN Wrestling : 24.7
+*/
+
+Define:
+ $"Level"_"Sport"_t_1~t_2$ as the average level of a certain country in a certain program from $t_1$ to $t_2$.
+ 
+ We calculated each country's $"Level"_("Gymnastics",(2008~2024))$, $"Level"_("Water Polo",(2008~2024))$, and $"Level"_("Wrestling",(2008~2024))$ as their respective historical level in this program. Combining the above data, we have selected the following three countries and programs that are suitable for investing in “great coaches”:
+
+#figure(
+  table(
+  columns: (2fr,2fr,2fr),
+  inset: 3pt,
+  stroke:none,
+  align: (center,center,center),
+  [*Country*],[*Sport*],[*Level*],
+[GER],[Artistic Gymnastics],[29.25],
+[SRB],[Water Polo],[36.4],
+[JPN],[Wrestling],[ 24.7]
+  ),
+  caption: none,
+)
+
+=== Estimating the contribution of their “great coaches”
+
+The data we have so far is shown below:
+
+#figure(
+  table(
+  columns: (2fr,3fr,2fr,2fr,3fr),
+  inset: 3pt,
+  stroke:none,
+  align: (center,center,center,center,center),
+ [*NOC*],[*Sport*],[*Contribution*],[*Level*],[*Number of medals*],
+[CHN],[Volleyball],[0.49],[19.2],[72],
+[USA],[Gymnastics],[0.51],[59.3],[72],
+[NED],[Cycling],[1.71],[11.5],[67],
+[CHN],[Table Tennis],[0.34],[34.7],[72],
+[FRA],[Fencing],[0.26],[42.3],[67],
+[BRA],[Football],[1.25],[44.9],[72],
+[KEN],[Athletics],[1.33],[33.2],[72],
+[GBR],[Swimming],[9.15],[32.6],[72],
+[GER],[Artistic Gymnastics],[nan],[29.25],[67],
+[SRB],[Water Polo],[nan],[36.4],[78],
+[JPN],[Wrestling],[nan],[24.7],[72]
+
+  ),
+  caption: none,
+)
+
+It can be seen that when the “Great Coach” effect occurs, Number of medals are all above and below $70.75$, with an extreme variance of 5. Let's try to build a multiple linear regression model：
+
+//Contribution=β_0+β_1*Level+β_1*Number of medals
+
+$
+  "Contribution" = beta_0 + beta_1*"Level" + beta_2*"Number of medals"
+$
+
+The model can be solved using the least squares method from the Statsmodels library in Python and the results obtained are shown below:
+
+//Figure4 OLS Regression Results.png
+#figure(
+  image("Figure4 OLS Regression Results.png", width: 70%),
+  caption: [OLS Regression Results.png],
+)
+
+From the results, the *t-test* result of *Number of medals* is not satisfactory, and the t-statistic corresponding to *Number of medals* has a P-value of 0.599, which shows that the linear relationship between *Number of medals* and Contribution is not significant. Combined with the previous results that the extreme deviation of *Number of medals* (extreme deviation = $5$) is small, we believe that when the “great coach” effect occurs, the influence of *Number of medals* on the contribution of coaches is very small. The t-statistic corresponding to *Level* corresponds to a *P-value* of $0.656$, and we get The linear relationship between *Level* and *Contribution* is not significant.
+
+We conjecture that *probably* the country's technological level as well as economic level will amplify or attenuate the “great coaches” effect. This is because upgrading high-quality professional training facilities can help a coach achieve the training effect he wants. The coach can also use science and technology to analyze more appropriate training methods and research more effective countermeasures, thus increasing the number of medals. We are limited by the small amount of data available for the “Great Coach” effect, as well as the requirement of the question that our model and data analysis must use only the data set provided. Therefore, we can only predict a vague coaching contribution rate by comparing the data, and the prediction is as follows:
+
+#figure(
+  table(
+  columns: (2fr,4fr,3fr,3fr,4fr),
+  inset: 3pt,
+  stroke:none,
+  align: (center,left,center),
+  [*NOC*],[*Sport*],[*Contribution*],[*Level*],[*Number of medals*],
+[GER],[Artistic Gymnastics],[0.7],[29.25],[67],
+[SRB],[Water Polo],[1],[36.4],[78],
+[JPN],[Wrestling],[0.5],[24.7],[72]
+
+  ),
+  caption: none,
+)
+
+So we suggest that *Germany* might consider investing in “Great Coaches” on *Artistic Gymnastics* with an expected coaching contribution of $0.7$, *Serbia* might consider investing in “Great Coaches” on* Water Polo* with an expected coaching contribution of $1$, and *Japan* might consider investing in “Great Coaches” on *Wrestling* with an expected coaching contribution of $0.5$.
+
+#pagebreak()
+
+= Task 5: Analysis of other factors.
+
+// 我们在讨论”伟大教练“效应时，分析了国家的经济水平可能会增强或减弱”伟大教练“效应。于是我们猜想当”伟大教练“效应不存在时，经济水平也会影响奖牌数。下面是中国队在从1984年到2024年的总奖牌数趋势图：
+
+When discussing the "great coach" effect, we analyzed that the country's economic level may enhance or weaken the "great coach" effect. So we conjectured that when the "great coach" effect does not exist, the economic level will also affect the number of medals. The following is the trend chart of the total number of medals won by the Chinese team from 1984 to 2024:
+
+#figure(
+  image("Figure5 CHN Total Medals.png", width: 80%),
+  caption: [China Medal Trend],
+)
+/*
+
+1984年到2024年中国的经济水平在不断提升。图中剔除掉2008年北京奥运会的数据（为了排除东道主的影响），我们发现中国的总奖牌数也呈上升的趋势。到这里我们认为经济水平会影响奥运奖牌数。
+
+下面是古巴队在从1984年到2024年的总奖牌数趋势图：
+*/
+
+From 1984 to 2024, China's economic level has been continuously improving. By excluding the data from the 2008 Beijing Olympics (to eliminate the impact of the host country), we found that China's total medal count is also on the rise. At this point, we believe that the economic level will affect the number of Olympic medals.
+
+The following is the trend chart of the total number of medals won by the Cuban team from 1984 to 2024:
+
+#figure(
+  image("Figure6 CUB Total Medals.png", width: 80%),
+  caption: [Cuba Medal Trend],
+)
+
+/*
+
+古巴在1996年至2020年期间，经济总体呈现增长趋势，但是总奖牌数却有下降的趋势。我们发现古巴的人口数量远小于中国的，且古巴存在体育人才流失的现象，因此，我们认为人口数量也会影响奥运奖牌数。
+
+下面是印度队在从1984年到2024年的总奖牌数趋势图：
+Figure7 IND Total Medals
+
+印度在2000年至2020年期间，经济快速增长，成为全球经济增长最快的国家之一。且印度的人口数量相对较多，但是总奖牌数也没有表现出明显的上升趋势。我们猜测可能是国家的基础设施不足和经济分配问题导致人口数量转化为运动员的比例较小，从而影响总奖牌数的变化。
+
+由此我们得到，经济水平，人口数量，基础设施水平会在一定程度上影响奖牌数的变化。
+*/
+
+From 1996 to 2020, Cuba's economy showed an overall growth trend, but the total number of medals showed a downward trend. We found that Cuba's population is much smaller than China's, and Cuba has a phenomenon of talent loss in sports. Therefore, we believe that population size will also affect the number of Olympic medals.
+
+The following is the trend chart of the total number of medals won by the Indian team from 1984 to 2024:
+
+#figure(
+  image("Figure7 IND Total Medals.png", width: 80%),
+  caption: [India Medal Trend],
+)
+
+From 2000 to 2020, India's economy grew rapidly, becoming one of the fastest-growing economies in the world. India also has a relatively large population, but the total number of medals has not shown a clear upward trend. We speculate that it may be due to insufficient national infrastructure and economic distribution issues that the proportion of the population converted into athletes is relatively small, thereby affecting the change in the total number of medals.
+
+From this, we conclude that the* economic level*, *population size*, and *infrastructure level* will affect the change in the number of medals to a certain extent.
