@@ -1,0 +1,17 @@
+### English Version:
+To demonstrate evidence of the existence of the ‘great coach’ effect, we set the weighted medal count as $ W_t = 3 \times Gold_t + 1 \times Silver_t + 1 \times Bronze_t $, assuming that $ W_t $ has different distributions before and after the year of the change and that $ W_t $ in each interval obeys a normal distribution. Bayesian change point detection is used to identify change points in the time series data. Then, we determine whether the change points are caused by the ‘great coach’ effect by combining the last year of the ‘great’ coach. After that, we calculate the coach's contribution rate by comparing the changes in the number of medals before and after the change point. 
+
+Next, based on the countries and their sports where there are ‘great’ coaches, we calculate the historical level of a country in a certain sport as follows:  
+$ Level = 4 \times Gold_t + 3 \times Silver_t + 1 \times Bronze_t + 0.5 \times No\ Medal_T $.  
+By analyzing the historical level and the total number of medals in the sport, we can select a country to be the best in the world. The total number of medals in the program, three countries, and their sports that should be considered for investment in ‘great’ coaches were selected. Finally, an attempt was made to build a regression model of coaching contribution, historical level, and number of medals in the sport to predict the contribution of the ‘great coach’ effect to the number of medals in these three countries.
+
+---
+
+### 中文翻译：
+为了证明“伟大教练”效应存在的证据，我们设置加权奖牌数为：  
+$ W_t = 3 \times Gold_t + 1 \times Silver_t + 1 \times Bronze_t $，  
+假设 $ W_t $ 在变化年份前后具有不同的分布，并且每个区间内的 $ W_t $ 服从正态分布。采用贝叶斯变化点检测方法，识别时间序列数据中的变化点。然后结合“伟大”教练的上任年份，判断变化点是否由“伟大教练”效应引起。之后，我们通过比较变化点前后的奖牌数变化来计算教练的贡献率。
+
+接下来，根据我们得到的存在“伟大”教练的国家及其运动项目，计算某个国家在某个项目上的历史水平，公式如下：  
+$ Level = 4 \times Gold_t + 3 \times Silver_t + 1 \times Bronze_t + 0.5 \times No\ Medal_T $。  
+通过分析历史水平和项目的奖牌总数，挑选出三个国家及其应考虑投资于“伟大”教练的运动项目。最后，尝试建立教练贡献率、历史水平和项目奖牌数的回归模型，以预测“伟大教练”效应对这三个国家奖牌数的贡献率。
